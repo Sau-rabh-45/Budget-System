@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Budget Tracker</title>
+  {% raw %}
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(to right, #e0eafc, #cfdef3);
+      margin: 0;
+      padding:20px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: darkseagreen;
+      padding: 30px; border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+
+    h1{
+      text-align: center;
+      color: #333;
+    }
+
+    form{
+      margin-bottom: 20px;
+    }
+
+    form input, form select, form button{
+      margin: 8px 0;
+      padding: 10px;
+      width: 100%;
+      border: 1px solid;
+      border-radius: 8px;
+      box-sizing: border-box;
+    }
+
+    form button{
+      background-color: #5c9ded;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .summary{
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+      background: #f5faff;
+      padding: 15px;
+      border-radius: 12px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px
+    }
+
+    table, th, td {
+      border: 1px solid #ddd
+    }
+
+    th,td {
+      padding: 12px; text-align: left
+    }
+
+    tr:nth-child(even){
+      background-color: #f9f9f9;
+    }
+
+    a{
+      color: #e74c3c;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    a:hover{
+      text-decoration: underline;
+    }
+  </style>
+  {% endraw %}
+</head>
+<body>
+  <div class="container">
+    <h1>BUDGET TRACKER</h1>
+    <form action="/add" method="POST">
+      <label>Type:</label>
+      <select name="type">
+        <option value="income">Income</option>
+        <option value="expense">Expense</option>
+      </select>
+      <label>Category:</label>
+      <input type="text" name="category" required>
+      <label>Amount:</label>
+      <input type="number" step="0.01" name="amount" required>
+      <label>Description:</label>
+      <input type="text" name="description">
+      <button type="submit">Add Transaction</button>
+    </form>
+
+    <div class="summary">
+      <p><strong>Total Income:</strong>₹{{income}}</p>
+      <p><strong>Total Expense:</strong>₹{{expense}}</p>
+      <p><strong>Balance:</strong>₹{{balance}}</p>
+    </div>
+
+    <table>
+      <tr>
+        <th>Date</th>
+        <th>Type</th>
+        <th>Category</th>
+        <th>Amount</th>
+        <th>Description</th>
+        <th>Action</th>
+      </tr>
+      {% for t in transactions %}
+      <tr>
+        <td>{{t.date}}</td>
+        <td>{{t.type}}</td>
+        <td>{{t.category}}</td>
+        <td>{{t.amount}}</td>
+        <td>{{t.description}}</td>
+        <td><a href="/delete/{{t.id}}">Delete</a></td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+</body>
+</html>
